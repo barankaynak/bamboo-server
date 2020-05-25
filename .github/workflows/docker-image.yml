@@ -22,6 +22,6 @@ jobs:
         VERSION: $(date +%s)
       run: docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD
     - name: Build the Docker image      
-      run: docker build . --file Dockerfile --tag barankaynak/bamboo-server:VERSION
+      run: docker build . --file Dockerfile --tag barankaynak/bamboo-server:$VERSION
     - name: Publish
-      run: docker push barankaynak/bamboo-server:VERSION
+      run: docker push barankaynak/bamboo-server:$VERSION
