@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Login Docker
+      env:
+        REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+        REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+        VERSION: $(date +%s)
+      run: docker login -u $REGISTRY_USERNAME -p $REGISTRY_PASSWORD
+    - name: Build the Docker image      
+      run: docker build . --file Dockerfile --tag barankaynak/bamboo-server:VERSION
+    - name: Publish
+      run: docker push barankaynak/bamboo-server:VERSION
